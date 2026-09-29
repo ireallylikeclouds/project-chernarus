@@ -3,6 +3,7 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
@@ -17,14 +18,21 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    # Only GitHub-owned actions: works under "allow GitHub actions only"
+    # repository policies and avoids unpinned third-party code in CI.
     steps:
       - uses: actions/checkout@v4
-      # Keep in sync with rust-toolchain.toml.
-      - uses: dtolnay/rust-toolchain@master
+      - name: Install pinned toolchain (keep in sync with rust-toolchain.toml)
+        run: rustup toolchain install 1.94.1 --profile minimal -c rustfmt -c clippy
+      - uses: actions/cache@v4
         with:
-          toolchain: "1.94.1"
-          components: rustfmt, clippy
-      - uses: Swatinem/rust-cache@v2
+          path: |
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
       - name: Format
         run: cargo fmt --all --check
       - name: Clippy
