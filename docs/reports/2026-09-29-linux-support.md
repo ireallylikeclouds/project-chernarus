@@ -41,7 +41,10 @@ same scenario had no reference; the overall verdict read NO_REFERENCE. FAIL now 
   failure masking). The symlink and masking tests were confirmed to **fail** on the old code.
 - Manual: scan of a symlinked layout; `refscan`/`parity` piped into `head` (exit 0); CRLF RPT imported
   from a Proton-style prefix path containing spaces, with `--meta`; reserved-key override rejected.
-- Windows CI job: runs on push; not observed locally.
+- **GitHub CI never executed.** All three runs on this branch (M0, this change, and a follow-up that
+  switched CI to GitHub-owned actions only) failed at job setup with no runner and no logs. The cause is
+  account- or repository-level and needs the owner (see `docs/architecture/toolchain.md`). Linux is
+  verified locally only; **Windows is unverified**.
 
 ## PARITY
 

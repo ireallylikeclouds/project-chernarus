@@ -16,8 +16,8 @@ Recorded during the M0 inspection (2026-09-29).
 
 | Platform | Status |
 |---|---|
-| Linux x86_64 | Developed and tested here; CI (`ubuntu-latest`) |
-| Windows x86_64 | CI (`windows-latest`) |
+| Linux x86_64 | Developed and tested locally (all checks pass); CI job configured (`ubuntu-latest`) |
+| Windows x86_64 | CI job configured (`windows-latest`); **never executed**, see below |
 | macOS | Not tested |
 
 Portability rules: paths are built with `Path`/`PathBuf` (never string concatenation with `\` or `/`);
@@ -42,6 +42,11 @@ cargo run -p chernarus-parity-cli -- params             # knowledge status of mo
 ```
 
 CI runs the same checks: [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml).
+
+**CI status (2026-09-29): no job has executed yet.** Every run so far failed within seconds with no
+runner assigned and no logs, including runs that use only GitHub-owned actions. That points at an
+account- or repository-level Actions setting (Settings → Actions → General, or account billing), not
+at the workflow. The reason is shown as an annotation on the run page.
 
 ## Dependencies (M0)
 

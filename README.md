@@ -35,7 +35,8 @@ animations, maps, scripts or configs), in original or converted form. Tests and 
 
 ## Quick start
 
-Works on Linux and Windows (both covered by CI). The reference game itself runs on Windows, or on
+Built and tested on Linux; Windows is configured in CI but not yet verified (CI jobs are not being
+started on GitHub; see [toolchain](docs/architecture/toolchain.md)). The reference game itself runs on Windows, or on
 Linux via Steam Play/Proton or Wine ([details](docs/reference/reference-installation.md#linux)).
 
 ```sh

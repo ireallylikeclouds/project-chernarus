@@ -74,7 +74,8 @@ The repository was empty (no commits). Everything is new:
 - CLI runtime checks: `refscan synth-install / scan / summary / query / pbo --verify / config / identify / provenance`
   (passes on the repository; exits 1 on a planted renamed PBO and an untracked PNG);
   `parity run --strict`, `parity params` (53 parameters, all UNKNOWN).
-- CI workflow YAML parses; **it has not run on GitHub yet**.
+- CI workflow YAML parses. *Correction (later the same day):* the workflow did trigger on GitHub, but
+  the job never started (no runner assigned); see `docs/reports/2026-09-29-linux-support.md`.
 
 **Not validated:** nothing has been run against a real ARMA 2 / DayZ Mod installation (none available);
 the SQF capture script has never run in game; no renderer exists.
