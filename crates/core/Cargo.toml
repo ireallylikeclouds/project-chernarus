@@ -1,0 +1,16 @@
+[package]
+name = "chernarus-core"
+description = "Shared vocabulary: verification status, sourced parameters, coordinate conventions, fixed timestep."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+
+[dev-dependencies]
+toml = "0.9"
+
+[lints]
+workspace = true

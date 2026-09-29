@@ -1,0 +1,22 @@
+[package]
+name = "chernarus-assets"
+description = "Asset provenance model and enforcement, reference-installation discovery, dependency catalog."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+chernarus-formats.workspace = true
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+thiserror = "2"
+toml = "0.9"
+walkdir = "2"
+
+[dev-dependencies]
+tempfile = "3"
+
+[lints]
+workspace = true

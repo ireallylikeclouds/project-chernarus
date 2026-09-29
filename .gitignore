@@ -1,0 +1,24 @@
+/target/
+
+# Local reference data. Anything derived from a Bohemia/DayZ installation
+# (catalogs, extracted files, RPT captures in progress) stays out of git.
+# See docs/assets/provenance.md.
+/reference/
+/reference-data/
+/local/
+
+# Proprietary container/asset formats must never be committed.
+# The repository guard test (crates/assets/tests/repository_guard.rs)
+# enforces this by content as well as by extension.
+*.pbo
+*.ebo
+*.paa
+*.pac
+*.p3d
+*.wrp
+*.rtm
+*.wss
+*.bisign
+*.bikey
+*.rpt
+*.RPT

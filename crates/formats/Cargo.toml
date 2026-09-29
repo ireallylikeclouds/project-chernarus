@@ -1,0 +1,15 @@
+[package]
+name = "chernarus-formats"
+description = "Readers (and fixture writers) for Real Virtuality 3 / ARMA 2 file formats. Parses metadata; never ships reference data."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+sha1 = "0.10"
+thiserror = "2"
+
+[lints]
+workspace = true

@@ -1,0 +1,17 @@
+# Provenance manifest for the distributable asset tree.
+# Every file under assets/ (other than this file and README.md) needs a record.
+# Rules and field meanings: docs/assets/provenance.md
+#
+# Example record (keep commented until a real asset exists):
+#
+# [[asset]]
+# path = "test_env/ground_grid.png"          # relative to assets/
+# class = "PROJECT-CREATED"                  # PROJECT-CREATED | LICENSED  (REFERENCE/UNKNOWN are rejected)
+# author = "Name or tool"
+# description = "1 m calibration grid for the flat test environment"
+# sha256 = "…"                               # optional; verified when present
+# reference_equivalent = ["ca\\data\\grid_co.paa"]   # optional reference virtual paths it stands in for
+#
+# LICENSED assets additionally require: source, licence, licence_file.
+
+schema = 1

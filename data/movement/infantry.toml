@@ -1,0 +1,92 @@
+# Infantry movement parameters (data-driven; read by crates/sim/src/movement.rs).
+#
+# EVERY VALUE BELOW IS AN UNKNOWN PLACEHOLDER. None has been measured in or
+# extracted from the reference game. They exist so the simulation can run and
+# the measure -> compare chain can be exercised end to end.
+#
+# Updating a value:
+#   1. capture it in the reference game (tools/capture/README.md) or extract it
+#      from reference data (docs/reference/systems/movement.md);
+#   2. set `value`, raise `status` (ESTIMATED / PARTIALLY_VERIFIED / VERIFIED);
+#   3. set `source` to the capture id or reference file + field it came from;
+#   4. update docs/parity/parity-matrix.md.
+#
+# Units: metres, seconds. Directions are relative to the body; left and right
+# are assumed symmetric (UNKNOWN).
+
+schema = 1
+
+[response]
+acceleration_mps2 = { value = 6.0, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+deceleration_mps2 = { value = 12.0, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+
+[stance_transition_s]
+stand_to_crouch = { value = 0.6, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+crouch_to_stand = { value = 0.6, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+stand_to_prone = { value = 1.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+prone_to_stand = { value = 1.6, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+crouch_to_prone = { value = 1.1, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+prone_to_crouch = { value = 1.2, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+
+[speed_mps.stand.walk]
+forward           = { value = 1.6, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+forward_diagonal  = { value = 1.6, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+sideways          = { value = 1.28, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward_diagonal = { value = 1.28, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward          = { value = 1.12, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+
+[speed_mps.stand.run]
+forward           = { value = 4.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+forward_diagonal  = { value = 4.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+sideways          = { value = 3.52, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward_diagonal = { value = 3.52, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward          = { value = 3.08, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+
+[speed_mps.stand.sprint]
+forward           = { value = 6.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+forward_diagonal  = { value = 6.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+sideways          = { value = 5.12, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward_diagonal = { value = 5.12, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward          = { value = 4.48, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+
+[speed_mps.crouch.walk]
+forward           = { value = 1.1, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+forward_diagonal  = { value = 1.1, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+sideways          = { value = 0.88, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward_diagonal = { value = 0.88, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward          = { value = 0.77, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+
+[speed_mps.crouch.run]
+forward           = { value = 3.0, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+forward_diagonal  = { value = 3.0, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+sideways          = { value = 2.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward_diagonal = { value = 2.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward          = { value = 2.1, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+
+[speed_mps.crouch.sprint]
+forward           = { value = 5.0, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+forward_diagonal  = { value = 5.0, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+sideways          = { value = 4.0, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward_diagonal = { value = 4.0, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward          = { value = 3.5, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+
+[speed_mps.prone.walk]
+forward           = { value = 0.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+forward_diagonal  = { value = 0.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+sideways          = { value = 0.32, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward_diagonal = { value = 0.32, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward          = { value = 0.28, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+
+[speed_mps.prone.run]
+forward           = { value = 0.8, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+forward_diagonal  = { value = 0.8, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+sideways          = { value = 0.64, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward_diagonal = { value = 0.64, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward          = { value = 0.56, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+
+[speed_mps.prone.sprint]
+forward           = { value = 1.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+forward_diagonal  = { value = 1.4, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+sideways          = { value = 1.12, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward_diagonal = { value = 1.12, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }
+backward          = { value = 0.98, status = "UNKNOWN", source = "placeholder: not derived from the reference; plausible magnitude only (M0)" }

@@ -1,0 +1,37 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/core",
+    "crates/formats",
+    "crates/assets",
+    "crates/sim",
+    "crates/parity",
+    "tools/refscan",
+    "tools/parity-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94"
+repository = "https://github.com/ireallylikeclouds/project-chernarus"
+publish = false
+
+[workspace.dependencies]
+chernarus-core = { path = "crates/core" }
+chernarus-formats = { path = "crates/formats" }
+chernarus-assets = { path = "crates/assets" }
+chernarus-sim = { path = "crates/sim" }
+chernarus-parity = { path = "crates/parity" }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_debug_implementations = "warn"
+
+[workspace.lints.clippy]
+dbg_macro = "warn"
+todo = "warn"
+unwrap_used = "warn"
+
+[profile.dev.package."*"]
+opt-level = 2

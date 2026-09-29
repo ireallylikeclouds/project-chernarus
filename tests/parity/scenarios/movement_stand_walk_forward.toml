@@ -1,0 +1,46 @@
+# Parity scenario. Format: crates/parity/src/scenario.rs; method: docs/parity/methodology.md
+id = "movement.stand_walk_forward"
+system = "movement"
+description = "From standing still, hold forward at walking pace on flat ground for 8 s, release, stay still for 3 s."
+capture_procedure = """
+Reference game: ARMA 2 OA + DayZ Mod (version to be pinned; see docs/reference/reference-installation.md).
+1. Flat, open, level ground (terrain slope is suspected to change speed; UNKNOWN). No items in hands (weapon state changes the animation set; record what was held).
+2. Stand still. Start tools/capture/chernarus_capture.sqf with ["movement.stand_walk_forward", 12].
+3. Within 1 s, with walk toggled on (walk/run toggle; default key UNKNOWN), hold the forward key for 8 s (count, or watch a stopwatch), release all keys, do not move for 3 s.
+4. Repeat for at least 3 runs; import with `parity import-rpt`.
+"""
+tick_rate_hz = 60
+duration_s = 11.0
+
+[initial]
+position = [0.0, 0.0, 0.0]
+heading_deg = 0.0
+stance = "stand"
+
+[[input]]
+at_s = 0.0
+forward = 1
+pace = "walk"
+
+[[input]]
+at_s = 8.0
+forward = 0
+
+[analysis]
+onset_threshold_m = 0.02
+steady_window_s = [2.0, 6.0]
+speed_half_window_s = 0.05
+
+[[metric]]
+kind = "steady_speed"
+tolerance = 0.05
+
+[[metric]]
+kind = "time_to_fraction"
+fraction = 0.9
+tolerance = 0.05
+
+[[metric]]
+kind = "stop_distance"
+fraction = 0.9
+tolerance = 0.10
