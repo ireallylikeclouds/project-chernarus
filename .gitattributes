@@ -1,0 +1,3 @@
+# Same line endings on every platform, so formatting checks, hashes of
+# committed data and test fixtures behave identically on Linux and Windows.
+* text=auto eol=lf

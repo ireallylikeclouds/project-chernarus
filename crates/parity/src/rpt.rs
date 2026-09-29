@@ -130,6 +130,16 @@ CHERNARUS_CAPTURE|1|movement.stand_run_forward|7|SAMPLE|0|0|0|0|0|0|
 "#;
 
     #[test]
+    fn windows_line_endings_are_handled() {
+        // RPT logs come from a Windows program, also when it runs under Wine/Proton.
+        let crlf = LOG.replace('\n', "\r\n");
+        let (lf, crlf) = (import(LOG), import(&crlf));
+        assert_eq!(lf.runs, crlf.runs);
+        assert_eq!(lf.rejected, crlf.rejected);
+        assert_eq!(crlf.runs[0].trace.samples[1].anim.as_deref(), Some("amovpercmrunsraswrfldf"));
+    }
+
+    #[test]
     fn imports_runs_and_rejects_bad_lines() {
         let import = import(LOG);
         assert_eq!(import.runs.len(), 2);

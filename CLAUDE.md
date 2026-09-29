@@ -16,4 +16,5 @@ format), `docs/architecture/overview.md` (crates and layering rules).
 - Never invent reference behaviour: unknown values are `Param`s with `status = "UNKNOWN"`, and the parity harness reports `NO_REFERENCE`.
 - Gameplay crates must not depend on rendering, networking or reference-format crates.
 - Update `docs/parity/parity-matrix.md` whenever a system's behaviour or evidence changes.
+- Everything must work on Linux and Windows (CI runs both): use `Path` APIs, accept CRLF input, match extensions case-insensitively.
 - Milestone work ends with a report in `docs/reports/`.

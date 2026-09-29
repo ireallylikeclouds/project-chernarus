@@ -27,6 +27,32 @@ cargo run -p chernarus-refscan -- scan            # writes reference-data/catalo
 cargo run -p chernarus-refscan -- summary reference-data/catalog.json
 ```
 
+## Linux
+
+The tools (`refscan`, `parity`) are native on Linux and Windows. The reference game is a Windows
+program; on Linux it runs under **Steam Play (Proton) or Wine**. That this works for ARMA 2 OA and
+DayZ Mod is community-reported, and **untested by this project**.
+
+Finding the installation (Steam library folders vary):
+
+```sh
+# native Steam, Flatpak Steam, plain Wine
+find ~/.local/share/Steam ~/.steam ~/.var/app/com.valvesoftware.Steam/.local/share/Steam ~/.wine \
+     -maxdepth 6 -iname 'ArmA2OA.exe' 2>/dev/null
+export CHERNARUS_REFERENCE_DIR="$(dirname "<path printed above>")"
+```
+
+Linux-specific behaviour of the tools:
+
+- **Symlinks are followed.** Mod folders (`@DayZ`, …) symlinked into the game directory are scanned
+  under the path the game sees; symlink loops become scan issues instead of hanging the scan.
+- **Case sensitivity.** Wine emulates Windows' case-insensitive file lookup for the game. The scanner
+  records paths exactly as they are on disk, matches file extensions case-insensitively, and
+  normalises engine virtual paths (always case-insensitive), so a catalog does not depend on the host OS.
+- **Captures from Proton/Wine** are marked with their platform (`parity import-rpt --meta platform=…`).
+  Whether Proton changes frame timing enough to affect measured movement is **UNKNOWN**. Do not
+  combine runs from different platforms in one scenario's reference until they are shown to agree.
+
 ## Expected layout (ESTIMATED)
 
 Mod folders such as `@DayZ/Addons/*.pbo`, base and expansion addon folders containing `*.pbo`,

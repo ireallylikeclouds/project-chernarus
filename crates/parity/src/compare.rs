@@ -162,12 +162,13 @@ pub fn compare(scenario: &Scenario, sim: &Trace, params_used: Vec<ParamUse>, ref
         })
         .collect();
 
+    // A measured failure is never hidden by another metric lacking a reference.
     let verdict = if metrics.iter().any(|m| m.verdict == Verdict::SimUnmeasurable) {
         Verdict::SimUnmeasurable
-    } else if metrics.iter().any(|m| m.verdict == Verdict::NoReference) {
-        Verdict::NoReference
     } else if metrics.iter().any(|m| m.verdict == Verdict::Fail) {
         Verdict::Fail
+    } else if metrics.iter().any(|m| m.verdict == Verdict::NoReference) {
+        Verdict::NoReference
     } else {
         Verdict::Pass
     };

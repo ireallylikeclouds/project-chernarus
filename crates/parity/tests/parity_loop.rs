@@ -144,6 +144,32 @@ fn synthetic_reference_passes_then_detects_a_difference() {
 }
 
 #[test]
+fn a_failure_is_not_masked_by_a_metric_without_reference() {
+    let s = scenario("movement_stand_run_forward.toml");
+    // Reference that never stops: stop distance is unmeasurable on it, while
+    // steady speed (3.0 m/s vs the simulation's placeholder) is measurable and wrong.
+    let mut reference = Trace::default();
+    reference.meta.insert("scenario".into(), s.id.clone());
+    reference.samples = (0..=600)
+        .map(|i| {
+            let t = f64::from(i) / 60.0;
+            chernarus_parity::trace::Sample {
+                t,
+                pos: [0.0, 3.0 * (t - 0.5).max(0.0), 0.0],
+                heading_deg: 0.0,
+                speed_kmh: None,
+                anim: None,
+            }
+        })
+        .collect();
+    let (sim, used) = simulate(&s, Arc::new(params()));
+    let report = compare(&s, &sim, used, &[reference]);
+    let verdicts: Vec<Verdict> = report.metrics.iter().map(|m| m.verdict).collect();
+    assert!(verdicts.contains(&Verdict::Fail) && verdicts.contains(&Verdict::NoReference), "{verdicts:?}");
+    assert_eq!(report.verdict, Verdict::Fail);
+}
+
+#[test]
 fn reference_for_another_scenario_is_rejected() {
     let s = scenario("movement_stand_run_forward.toml");
     let dir = tempfile::tempdir().expect("tempdir");

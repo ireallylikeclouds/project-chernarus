@@ -35,6 +35,9 @@ animations, maps, scripts or configs), in original or converted form. Tests and 
 
 ## Quick start
 
+Works on Linux and Windows (both covered by CI). The reference game itself runs on Windows, or on
+Linux via Steam Play/Proton or Wine ([details](docs/reference/reference-installation.md#linux)).
+
 ```sh
 cargo test --workspace                                   # all checks, including the asset boundary
 cargo run -p chernarus-parity-cli -- run                 # run parity scenarios

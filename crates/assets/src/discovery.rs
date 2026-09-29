@@ -1,7 +1,9 @@
 //! Asset discovery over a reference installation.
 //!
 //! Pipeline (see `docs/assets/discovery-pipeline.md`):
-//! 1. walk the installation (sorted, no symlink following);
+//! 1. walk the installation (sorted; symlinks followed, because Linux setups
+//!    commonly symlink mod folders into the game directory; loops are
+//!    reported as scan issues);
 //! 2. identify each file by signature and extension;
 //! 3. open PBOs and identify each entry, mounting it at `<prefix>\<name>`;
 //! 4. extract dependency references from configs, text and (heuristically)
@@ -85,11 +87,14 @@ pub fn scan(root: &Path, options: &ScanOptions) -> std::io::Result<Catalog> {
         ));
     }
     let mut scan = Scan::default();
-    for entry in WalkDir::new(root).follow_links(false).sort_by_file_name() {
+    // Files reached through a symlink are recorded under the path they were
+    // reached by, which is also the path the game sees.
+    for entry in WalkDir::new(root).follow_links(true).sort_by_file_name() {
         let entry = match entry {
             Ok(e) => e,
             Err(e) => {
-                scan.issue(&root.display().to_string(), format!("walk error: {e}"));
+                let at = e.path().map_or_else(|| root.display().to_string(), |p| relative_slash_path(root, p));
+                scan.issue(&at, format!("walk error: {e}"));
                 continue;
             }
         };

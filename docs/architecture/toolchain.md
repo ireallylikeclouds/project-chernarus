@@ -12,6 +12,21 @@ Recorded during the M0 inspection (2026-09-29).
 | Formatting | `rustfmt.toml`: `max_width = 120` |
 | Dev profile | dependencies built at `opt-level = 2` so tests on large inputs stay fast |
 
+## Supported platforms
+
+| Platform | Status |
+|---|---|
+| Linux x86_64 | Developed and tested here; CI (`ubuntu-latest`) |
+| Windows x86_64 | CI (`windows-latest`) |
+| macOS | Not tested |
+
+Portability rules: paths are built with `Path`/`PathBuf` (never string concatenation with `\` or `/`);
+identifiers stored in catalogs and traces use `/` for host paths and `\` for engine virtual paths,
+independent of the host OS. Text files are LF (`.gitattributes`) and readers accept CRLF. File
+extensions are matched case-insensitively. Directory walks follow symlinks, with loop detection. The
+CLIs exit cleanly when their output pipe closes (`refscan … | head`). The only platform-specific
+test is the Unix symlink test.
+
 ## Commands
 
 ```sh

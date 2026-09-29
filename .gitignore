@@ -9,16 +9,17 @@
 
 # Proprietary container/asset formats must never be committed.
 # The repository guard test (crates/assets/tests/repository_guard.rs)
-# enforces this by content as well as by extension.
-*.pbo
-*.ebo
-*.paa
-*.pac
-*.p3d
-*.wrp
-*.rtm
-*.wss
-*.bisign
-*.bikey
-*.rpt
-*.RPT
+# enforces this by content as well as by extension. Patterns are written
+# case-insensitively because git matches case-sensitively on Linux and
+# nothing guarantees lower-case extensions in a game or mod installation.
+*.[pP][bB][oO]
+*.[eE][bB][oO]
+*.[pP][aA][aA]
+*.[pP][aA][cC]
+*.[pP]3[dD]
+*.[wW][rR][pP]
+*.[rR][tT][mM]
+*.[wW][sS][sS]
+*.[bB][iI][sS][iI][gG][nN]
+*.[bB][iI][kK][eE][yY]
+*.[rR][pP][tT]

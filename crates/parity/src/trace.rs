@@ -13,6 +13,9 @@ use thiserror::Error;
 
 const HEADER: &str = "t,x,y,z,heading_deg,speed_kmh,anim";
 
+/// Metadata keys written by the capture/import itself.
+pub const RESERVED_META: &[&str] = &["scenario", "run", "source", "game_version", "world", "unit_class"];
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Sample {
     /// Seconds since the start of the trace.
@@ -44,6 +47,23 @@ pub enum TraceError {
 impl Trace {
     pub fn meta(&self, key: &str) -> Option<&str> {
         self.meta.get(key).map(String::as_str)
+    }
+
+    /// Add user-supplied metadata (for example `platform` or `fps` of a
+    /// capture session). Keys set by the capture itself cannot be replaced.
+    pub fn add_user_meta(&mut self, key: &str, value: &str) -> Result<(), String> {
+        let key_ok = !key.is_empty() && key.bytes().all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'_');
+        if !key_ok {
+            return Err(format!("metadata key `{key}` must use only [a-z0-9_]"));
+        }
+        if RESERVED_META.contains(&key) {
+            return Err(format!("metadata key `{key}` is set by the capture and cannot be overridden"));
+        }
+        if value.contains('\n') {
+            return Err(format!("metadata value for `{key}` must be a single line"));
+        }
+        self.meta.insert(key.to_owned(), value.trim().to_owned());
+        Ok(())
     }
 
     pub fn to_csv(&self) -> String {
@@ -155,6 +175,25 @@ mod tests {
             anim: Some("amovpercmrunsnonwnondf".into()),
         });
         assert_eq!(Trace::from_csv(&t.to_csv()).expect("parses"), t);
+    }
+
+    #[test]
+    fn accepts_windows_line_endings() {
+        let text = format!("# scenario: s\r\n{HEADER}\r\n0,0,0,0,0,,\r\n0.5,1,2,0,90,3.6,anim\r\n");
+        let t = Trace::from_csv(&text).expect("CRLF parses");
+        assert_eq!(t.meta("scenario"), Some("s"));
+        assert_eq!(t.samples.len(), 2);
+        assert_eq!(t.samples[1].anim.as_deref(), Some("anim"));
+    }
+
+    #[test]
+    fn user_metadata_is_validated() {
+        let mut t = Trace::default();
+        t.add_user_meta("platform", " proton ").expect("valid");
+        assert_eq!(t.meta("platform"), Some("proton"));
+        assert!(t.add_user_meta("run", "x").is_err());
+        assert!(t.add_user_meta("Bad-Key", "x").is_err());
+        assert!(t.add_user_meta("fps", "60\n# scenario: forged").is_err());
     }
 
     #[test]

@@ -9,7 +9,14 @@ env:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    name: check (${{ matrix.os }})
+    # Linux is a first-class platform (development, Proton/Wine reference setups);
+    # Windows is where the reference game runs natively.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       # Keep in sync with rust-toolchain.toml.

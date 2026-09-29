@@ -34,10 +34,12 @@ For each metric: the simulation value, the reference mean ± sd over runs, the d
 
 | Verdict | Meaning |
 |---|---|
-| `PASS` | \|sim − reference mean\| ≤ tolerance for every metric |
-| `FAIL` | at least one metric outside tolerance |
-| `NO_REFERENCE` | no reference runs; nothing is compared and nothing is invented |
 | `SIM_UNMEASURABLE` | the simulation trace lacks what a metric needs (a scenario or implementation bug) |
+| `FAIL` | at least one compared metric is outside tolerance, even if other metrics have no reference |
+| `NO_REFERENCE` | no failure, but at least one metric has no reference value; nothing is invented for it |
+| `PASS` | every metric compared and \|sim − reference mean\| ≤ tolerance |
+
+The overall verdict is the first row that applies, in the order above.
 
 The report also states:
 

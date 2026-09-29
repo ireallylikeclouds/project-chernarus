@@ -10,7 +10,7 @@ Reference Installation ──► Asset Discovery ──► Format Identification
 | Stage | What it does | State |
 |---|---|---|
 | Reference Installation | Path argument or `CHERNARUS_REFERENCE_DIR`; read-only | **Done** |
-| Asset Discovery | Walks every file (sorted, no symlink following); opens PBOs and treats each entry as an asset mounted at `<prefix>\<entry>` | **Done** |
+| Asset Discovery | Walks every file (sorted; symlinks followed with loop detection, since Linux setups often symlink mod folders); opens PBOs and treats each entry as an asset mounted at `<prefix>\<entry>` | **Done** |
 | Format Identification | Content signature first, then extension; both recorded; disagreement flagged (`format_conflict`) | **Done**; signatures ESTIMATED |
 | Metadata Extraction | Size, SHA-256; PBO header extensions, prefix, SHA-1 trailer check; LZSS checksum variant; full parse of rapified configs | **Partial**: PBO + raP; other formats are signature-only |
 | Dependency Graph | References extracted and resolved against the virtual file system (below) | **Done** for configs, text and a binary heuristic |

@@ -26,11 +26,19 @@ must start with the validation steps below.
    `["movement.stand_run_forward", 12] execVM "chernarus_capture.sqf";`
 5. Perform the procedure. Repeat for **at least three runs** (three consistent runs are what
    the harness needs to call a reference behaviour VERIFIED).
-6. Quit, find the newest `ArmA2OA.RPT` (usually under `%LOCALAPPDATA%\ArmA 2 OA\`, UNKNOWN for
-   all setups), and import it:
+6. Quit, find the newest `ArmA2OA.RPT`, and import it, recording the platform and frame rate:
+
+   | Platform | Where the RPT usually is (ESTIMATED) |
+   |---|---|
+   | Windows | `%LOCALAPPDATA%\ArmA 2 OA\` |
+   | Linux, Steam Play (Proton) | `<steam library>/steamapps/compatdata/<app id>/pfx/drive_c/users/steamuser/AppData/Local/ArmA 2 OA/` |
+   | Linux, Wine | `<wine prefix>/drive_c/users/<user>/AppData/Local/ArmA 2 OA/` |
+
+   On Linux, `find ~ -iname '*.rpt' -newermt '-1 hour' 2>/dev/null` finds it wherever the prefix is.
 
    ```sh
-   cargo run -p chernarus-parity-cli -- import-rpt path/to/ArmA2OA.RPT
+   cargo run -p chernarus-parity-cli -- import-rpt path/to/ArmA2OA.RPT --meta platform=windows --meta fps=60
+   #   … or --meta platform=proton-<version> / wine-<version>
    cargo run -p chernarus-parity-cli -- run
    ```
 
@@ -59,4 +67,6 @@ and raise the statuses there accordingly.
   missing in the chosen build, remove it from the BEGIN line and record the version by hand.
 - Human key timing is imprecise. The parity metrics align on motion onset and measure steady-state
   speed, acceleration and stopping, which do not depend on when exactly a key was pressed.
-- Frame-rate effects on movement are UNKNOWN; note the FPS of each session in the trace metadata.
+- Frame-rate effects on movement are UNKNOWN; record the FPS of each session with `--meta fps=…`.
+- Platform effects (native Windows vs Proton/Wine) are UNKNOWN; record them with `--meta platform=…`
+  and keep platforms separate until runs are shown to agree.

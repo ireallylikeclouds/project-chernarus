@@ -149,3 +149,56 @@ fn metadata_only_scan_skips_content_work() {
     let rvmat = index.by_id["Expansion/Addons/synth_core.pbo::data\\thing.rvmat"];
     assert_eq!(rvmat.format, Format::TextConfig);
 }
+
+/// Linux installations often symlink mod folders (and sometimes single
+/// archives) into the game directory. They must be scanned, not skipped,
+/// and a symlink loop must be reported rather than hang the scan.
+#[cfg(unix)]
+#[test]
+fn follows_symlinked_mods_and_reports_loops() {
+    use std::os::unix::fs::symlink;
+
+    let dir = tempfile::tempdir().expect("tempdir");
+    let real = dir.path().join("real");
+    let root = dir.path().join("game");
+    write_synthetic_installation(&real).expect("fixture");
+    std::fs::create_dir_all(&root).expect("mkdir");
+    symlink(real.join("@SynthMod"), root.join("@SynthMod")).expect("dir symlink");
+    symlink(real.join("Expansion/Addons/synth_core.pbo"), root.join("core_link.pbo")).expect("file symlink");
+    symlink(&root, root.join("loop")).expect("loop symlink");
+
+    let catalog = scan(&root, &ScanOptions::default()).expect("scan");
+    let index = catalog.index();
+    assert!(index.by_id.contains_key("@SynthMod/Addons/synth_mod.pbo::zombie.p3d"), "symlinked mod folder scanned");
+    assert!(index.by_id.contains_key("core_link.pbo::models\\thing.p3d"), "symlinked archive scanned");
+    // Cross-archive references resolve across the symlinked locations.
+    assert!(
+        catalog.edges.iter().any(|e| e.from == "@SynthMod/Addons/synth_mod.pbo::config.bin"
+            && e.providers == ["core_link.pbo::data\\thing_co.paa"]),
+        "{:#?}",
+        catalog.edges
+    );
+    assert!(
+        catalog.issues.iter().any(|i| i.asset == "loop" && i.message.contains("walk error")),
+        "{:?}",
+        catalog.issues
+    );
+}
+
+/// File systems on Linux are case-sensitive; archives with upper-case
+/// extensions must still be recognised.
+#[test]
+fn upper_case_extensions_are_recognised() {
+    let dir = tempfile::tempdir().expect("tempdir");
+    write_synthetic_installation(dir.path()).expect("fixture");
+    std::fs::rename(
+        dir.path().join("@SynthMod/Addons/old_style.pbo"),
+        dir.path().join("@SynthMod/Addons/OLD_STYLE.PBO"),
+    )
+    .expect("rename");
+    let catalog = scan(dir.path(), &ScanOptions::default()).expect("scan");
+    let index = catalog.index();
+    let old = index.by_id["@SynthMod/Addons/OLD_STYLE.PBO"];
+    assert_eq!(old.format, Format::Pbo);
+    assert_eq!(old.pbo.as_ref().map(|p| p.entry_count), Some(1));
+}
